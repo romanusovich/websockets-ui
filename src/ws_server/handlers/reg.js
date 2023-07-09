@@ -1,10 +1,11 @@
 import { PLAYERS } from "../data/players.js";
 
-export function reg(data) {
+export function reg(data, ws) {
     const newPlayer = {
         id: PLAYERS.length + 1,
         name: data.name,
         password: data.password,
+        ws,
     };
     const player = PLAYERS.find((value) => value.name === data.name);
     const result = {
