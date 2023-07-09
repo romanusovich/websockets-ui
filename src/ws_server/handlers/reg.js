@@ -6,17 +6,24 @@ export function reg(data) {
         name: data.name,
         password: data.password,
     };
+    const player = PLAYERS.find((value) => value.name === data.name);
     const result = {
-        name: newPlayer.name,
-        index: newPlayer.id,
-        error: false,
-        errorText: '',
+        type: 'reg',
+        data: {
+            name: player ? player.name : newPlayer.name,
+            index: player ? player.id : newPlayer.id,
+            error: false,
+            errorText: '',
+        },
+        id: 0,
     };
     try {
-        PLAYERS.push(newPlayer);
+        if (player && player.password !== data.password) throw new Error('Wrong password');
+        if (!player) PLAYERS.push(newPlayer);
     } catch (e) {
-        result.error = true;
-        result.errorText = e.message;
+        result.data.error = true;
+        result.data.errorText = e.message;
     }
+    result.data = JSON.stringify(result.data);
     return result;
 };
