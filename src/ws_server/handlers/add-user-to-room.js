@@ -2,22 +2,23 @@ import { PLAYERS } from "../data/players.js";
 import { ROOMS } from "../data/rooms.js";
 import { createGame } from "./createGame.js";
 
-export function addUserToRoom(data, user) {
+export function addUserToRoom(data, secondUser) {
     const roomId = ROOMS.findIndex((roo) => roo.roomId === data.indexRoom);
     const room = ROOMS[roomId];
     const isSelfConnect = room.roomUsers
-        .every((use) => user.index === use.index);
+        .every((use) => secondUser.index === use.index);
     if (!isSelfConnect) {
         ROOMS[roomId]
             .roomUsers.push({
-                name: user.name,
-                index: user.index,
+                name: secondUser.name,
+                index: secondUser.index,
             });
-        const secondUser = PLAYERS
+        const firstUser = PLAYERS
             .find((player) => player.id === room.roomUsers[0].index);
         ROOMS.splice(roomId, 1);
-        secondUser.ws.send(JSON.stringify(createGame(secondUser)));
-        return createGame(user);
+        const result = createGame(secondUser.index, firstUser.id);
+        firstUser.ws.send(JSON.stringify(result[0]));
+        return result[1];
     }
     return {};
 }
