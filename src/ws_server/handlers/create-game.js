@@ -11,6 +11,8 @@ export function createGame(firstPlayerID, secondPlayerID) {
             id: secondPlayerID,
             ships: []
         },
+        turn: 0,
+        lastStatus: '',
     };
     GAMES.push(newGame);
     return [

@@ -4,6 +4,7 @@ import { updateRoom } from "./update-room.js";
 import { addUserToRoom } from "./add-user-to-room.js";
 import { updateWinners } from "./update-winners.js";
 import { addShips } from "./add-ships.js";
+import { turn } from "./turn.js";
 
 export function WSHandler(data, user, ws) {
     const body = data.data ? JSON.parse(data.data) : '';
@@ -16,7 +17,7 @@ export function WSHandler(data, user, ws) {
         case 'add_user_to_room':
             return [addUserToRoom(body, user), { cast: 'broad', data: updateRoom() }];
         case 'add_ships':
-            return [addShips(body)];
+            return [addShips(body), turn(body)];
         default:
             return 'Bad req type';
     }
