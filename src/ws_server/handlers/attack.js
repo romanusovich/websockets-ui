@@ -1,5 +1,6 @@
 import { GAMES } from "../data/games.js";
 import { PLAYERS } from "../data/players.js";
+import { WINNERS } from "../data/winners.js";
 
 export function attack(data) {
     const game = GAMES.find((gam) => gam.idGame === data.gameId);
@@ -28,14 +29,23 @@ export function attack(data) {
                     if (enemyShips[i].shots >= enemyShips[i].length) {
                         result = getKill(data.x, data.y, enemyPlayer, enemyShips[i], data.indexPlayer);
                         game.lastStatus = 'killed';
-                        enemyShips.splice(i , 1);
-                        if (!enemyShips.length) result = [{
-                            type: 'finish',
-                            data: JSON.stringify({
-                                winPlayer: data.indexPlayer,
-                            }),
-                            id: 0,
-                        }]
+                        enemyShips.splice(i, 1);
+                        if (!enemyShips.length) {
+                            result = [{
+                                type: 'finish',
+                                data: JSON.stringify({
+                                    winPlayer: data.indexPlayer,
+                                }),
+                                id: 0,
+                            }];
+                            const player = PLAYERS.find((play) => play.id === data.indexPlayer);
+                            const winner = WINNERS.find((winn) => winn.name === player.name);
+                            if (winner) winner.wins++;
+                            else WINNERS.push({
+                                name: player.name,
+                                wins: 1,
+                            });
+                        }
                     }
                     else {
                         result = getShot(data.x, data.y, data.indexPlayer);
@@ -51,14 +61,23 @@ export function attack(data) {
                     if (enemyShips[i].shots >= enemyShips[i].length) {
                         result = getKill(data.x, data.y, enemyPlayer, enemyShips[i], data.indexPlayer);
                         game.lastStatus = 'killed';
-                        enemyShips.splice(i , 1);
-                        if (!enemyShips.length) result = [{
-                            type: 'finish',
-                            data: JSON.stringify({
-                                winPlayer: data.indexPlayer,
-                            }),
-                            id: 0,
-                        }]
+                        enemyShips.splice(i, 1);
+                        if (!enemyShips.length) {
+                            result = [{
+                                type: 'finish',
+                                data: JSON.stringify({
+                                    winPlayer: data.indexPlayer,
+                                }),
+                                id: 0,
+                            }];
+                            const player = PLAYERS.find((play) => play.id === data.indexPlayer);
+                            const winner = WINNERS.find((winn) => winn.name === player.name);
+                            if (winner) winner.wins++;
+                            else WINNERS.push({
+                                name: player.name,
+                                wins: 1,
+                            });
+                        }
                     }
                     else {
                         result = getShot(data.x, data.y, data.indexPlayer);

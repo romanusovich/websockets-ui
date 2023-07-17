@@ -20,9 +20,9 @@ export function WSHandler(data, user, ws) {
         case 'add_ships':
             return [addShips(body), turn(body)];
         case 'attack':
-            return [...attack(body), turn(body)];
+            return [...attack(body), turn(body), { cast: 'broad', data: updateWinners() }];
         case 'randomAttack':
-            return [...attack(body), turn(body)];
+            return [...attack(body), turn(body), { cast: 'broad', data: updateWinners() }];
         default:
             return 'Bad req type';
     }
