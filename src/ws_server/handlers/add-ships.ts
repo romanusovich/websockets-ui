@@ -1,8 +1,9 @@
 import { GAMES } from "../data/games.js";
 import { PLAYERS } from "../data/players.js";
+import { Game, Ship, User, addShipsData } from "../types.js";
 
-export function addShips(data) {
-    const game = GAMES.find((gam) => gam.idGame === data.gameId);
+export function addShips(data: addShipsData) {
+    const game = GAMES.find((gam) => gam.idGame === data.gameId) as Game;
     const currentPlayer = game.firstPlayer.id === data.indexPlayer
         ? game.firstPlayer
         : game.secondPlayer;
@@ -12,7 +13,7 @@ export function addShips(data) {
             ? game.firstPlayer
             : game.secondPlayer;
         const readyPlayerWS = PLAYERS
-            .find((player) => player.id === readyPlayer.id).ws;
+            .find((player) => player.id === readyPlayer.id)?.ws as WebSocket;
         readyPlayerWS.send(JSON.stringify({
             type: 'start_game',
             data: JSON.stringify({

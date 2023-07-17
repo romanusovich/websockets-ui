@@ -1,11 +1,12 @@
 import { httpServer } from "./src/http_server/index.js";
 import { WebSocketServer } from "ws";
 import { WSHandler } from "./src/ws_server/handlers/handler.js";
+import { regRData } from "./src/ws_server/types.js";
 
 const wss = new WebSocketServer({ port: 3000 });
 
 wss.on('connection', function connection(ws) {
-    let user;
+    let user: regRData;
 
     ws.on('error', console.error);
 
@@ -17,7 +18,7 @@ wss.on('connection', function connection(ws) {
 
         if (result) {
             for (let i = 0; i < result.length; i += 1) {
-                if (result[i].cast) wss.broadcast(JSON.stringify(result[i].data));
+                if (result[i].cast) broadcast(JSON.stringify(result[i].data));
                 else ws.send(JSON.stringify(result[i]));
             }
         }
@@ -29,7 +30,7 @@ wss.on('connection', function connection(ws) {
     });
 });
 
-wss.broadcast = function broadcast(msg) {
+function broadcast(msg: string) {
     console.log(msg);
     wss.clients.forEach(function each(client) {
         client.send(msg);

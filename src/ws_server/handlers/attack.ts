@@ -1,10 +1,11 @@
 import { GAMES } from "../data/games.js";
 import { PLAYERS } from "../data/players.js";
 import { WINNERS } from "../data/winners.js";
+import { Game, GameUser, Ship, User, attackData } from "../types.js";
 
-export function attack(data) {
-    const game = GAMES.find((gam) => gam.idGame === data.gameId);
-    const enemyPlayer = game.firstPlayer.id !== data.indexPlayer
+export function attack(data: attackData) {
+    const game = GAMES.find((gam) => gam.idGame === data.gameId) as Game;
+    const enemyPlayer: GameUser = game.firstPlayer.id !== data.indexPlayer
         ? game.firstPlayer
         : game.secondPlayer;
     if (!data.hasOwnProperty('x') && !data.hasOwnProperty('y')) {
@@ -18,7 +19,7 @@ export function attack(data) {
     if (game.turn === data.indexPlayer && !enemyPlayer.shots.has(`${data.x}${data.y}`)) {
         game.lastStatus = 'miss';
         const enemyShips = enemyPlayer.ships;
-        let result = '';
+        let result: any = '';
         for (let i = 0; i < enemyShips.length; i++) {
             if (enemyShips[i].direction) {
                 if (enemyShips[i].position.y <= data.y &&
@@ -38,7 +39,7 @@ export function attack(data) {
                                 }),
                                 id: 0,
                             }];
-                            const player = PLAYERS.find((play) => play.id === data.indexPlayer);
+                            const player = PLAYERS.find((play) => play.id === data.indexPlayer) as User;
                             const winner = WINNERS.find((winn) => winn.name === player.name);
                             if (winner) winner.wins++;
                             else WINNERS.push({
@@ -70,7 +71,7 @@ export function attack(data) {
                                 }),
                                 id: 0,
                             }];
-                            const player = PLAYERS.find((play) => play.id === data.indexPlayer);
+                            const player = PLAYERS.find((play) => play.id === data.indexPlayer) as User;
                             const winner = WINNERS.find((winn) => winn.name === player.name);
                             if (winner) winner.wins++;
                             else WINNERS.push({
@@ -88,7 +89,7 @@ export function attack(data) {
         }
         enemyPlayer.shots.add(`${data.x}${data.y}`);
         const readyPlayerWS = PLAYERS
-            .find((player) => player.id === enemyPlayer.id).ws;
+            .find((player) => player.id === enemyPlayer.id)?.ws as WebSocket;
         const readyPlayerResult = result ? result : getMiss(data.x, data.y, data.indexPlayer);
         for (let i = 0; i < readyPlayerResult.length; i++) {
             readyPlayerWS.send(JSON.stringify(readyPlayerResult[i]));
@@ -98,7 +99,7 @@ export function attack(data) {
     return [{}];
 }
 
-function getKill(x, y, enemy, eShip, id) {
+function getKill(x: number, y: number, enemy: GameUser, eShip: Ship, id: number) {
     const result = [
         {
             type: 'attack',
@@ -144,7 +145,7 @@ function getKill(x, y, enemy, eShip, id) {
     return result;
 }
 
-function getShot(x, y, id) {
+function getShot(x: number, y: number, id: number) {
     return [
         {
             type: 'attack',
@@ -161,7 +162,7 @@ function getShot(x, y, id) {
     ];
 }
 
-function getMiss(x, y, id) {
+function getMiss(x: number, y: number, id: number) {
     return [
         {
             type: 'attack',
@@ -178,7 +179,7 @@ function getMiss(x, y, id) {
     ];
 }
 
-function getRandomInt(min, max) {
+function getRandomInt(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min);

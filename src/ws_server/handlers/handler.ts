@@ -6,9 +6,10 @@ import { updateWinners } from "./update-winners.js";
 import { addShips } from "./add-ships.js";
 import { turn } from "./turn.js";
 import { attack } from "./attack.js";
+import { User, WSRequest, regRData } from "../types.js";
 
-export function WSHandler(data, user, ws) {
-    const body = data.data ? JSON.parse(data.data) : '';
+export function WSHandler(data: WSRequest, user: regRData, ws: WebSocket | any) {
+    const body = data.data ? JSON.parse(data.data as string) : '';
     switch (data.type) {
         case 'reg':
             return [reg(body, ws), updateRoom(), updateWinners()];

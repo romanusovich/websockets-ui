@@ -1,6 +1,7 @@
 import { ROOMS } from "../data/rooms.js";
+import { regRData } from "../types.js";
 
-export function createRoom(user) {
+export function createRoom(user: regRData) {
     const newRoom = {
         roomId: ROOMS.length + 1,
         roomUsers: [

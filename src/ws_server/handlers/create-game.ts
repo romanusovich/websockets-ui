@@ -1,17 +1,17 @@
 import { GAMES } from "../data/games.js";
 
-export function createGame(firstPlayerID, secondPlayerID) {
+export function createGame(firstPlayerID: number, secondPlayerID: number) {
     const newGame = {
         idGame: GAMES.length + 1,
         firstPlayer: {
             id: firstPlayerID,
             ships: [],
-            shots: new Set(),
+            shots: new Set<string>(),
         },
         secondPlayer: {
             id: secondPlayerID,
             ships: [],
-            shots: new Set(),
+            shots: new Set<string>(),
         },
         turn: 0,
         lastStatus: '',
