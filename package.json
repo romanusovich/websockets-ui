@@ -13,7 +13,8 @@
     "keywords": [],
     "license": "ISC",
     "devDependencies": {
-        "nodemon": "^2.0.16"
+        "nodemon": "^2.0.16",
+        "typescript": "^5.1.6"
     },
     "dependencies": {
         "ws": "^8.8.0"
