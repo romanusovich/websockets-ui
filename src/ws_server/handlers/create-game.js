@@ -5,11 +5,13 @@ export function createGame(firstPlayerID, secondPlayerID) {
         idGame: GAMES.length + 1,
         firstPlayer: {
             id: firstPlayerID,
-            ships: []
+            ships: [],
+            shots: new Set(),
         },
         secondPlayer: {
             id: secondPlayerID,
-            ships: []
+            ships: [],
+            shots: new Set(),
         },
         turn: 0,
         lastStatus: '',
