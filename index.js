@@ -23,6 +23,10 @@ wss.on('connection', function connection(ws) {
         }
         if (result && result[0].type === 'reg') user = JSON.parse(result[0].data);
     });
+
+    ws.on('close', function close() {
+        console.log(`${user.name} has left`)
+    });
 });
 
 wss.broadcast = function broadcast(msg) {
